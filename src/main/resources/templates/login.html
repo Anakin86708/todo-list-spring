@@ -8,9 +8,12 @@
 
 <body>
 <form method="post">
-  Name: <input id="name" name="name" type="text"/>
+  Name: <input name="name" type="text"><br>
+  Email: <input id="name" name="email" type="email"/><br>
+  Password: <input name="password" type="password"><br>
   <input type="submit">
 </form>
+<p th:text="${validationMessage}"></p>
 </body>
 
 </html>
