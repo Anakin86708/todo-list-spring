@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>ToDo List</title>
 </head>
+
 <body>
 <h1>ToDo List</h1>
 <h2 th:text="'User: ' + ${user}"></h2>
 <a href="/add-todo">Create new</a>
 <hr>
-<p th:text="${todos}"></p>
+<table border="2">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Target date</th>
+        <th>Is done?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${todos.isEmpty()}">
+        <td colspan="3">No ToDo available!</td>
+    </tr>
+    <tr th:each="todo: ${todos}">
+        <td><span th:text="${todo.getDescription()}"></span></td>
+        <td><span th:text="${todo.getTargetDate()}"></span></td>
+        <td><input th:checked="${todo.isDone()}" type="checkbox"></td>
+        <!-- <td><span th:text="${todo.isDone()}"></span></td> -->
+    </tr>
+    </tbody>
+</table>
 </body>
+
 </html>

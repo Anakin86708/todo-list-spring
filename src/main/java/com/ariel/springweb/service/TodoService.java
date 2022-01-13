@@ -3,7 +3,6 @@ package com.ariel.springweb.service;
 import com.ariel.springweb.model.Todo;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +11,6 @@ import java.util.List;
 public class TodoService {
     private final List<Todo> todos = new ArrayList<>();
     private int idCounter = 0;
-
-    public TodoService() {
-        todos.add(new Todo(0, "ariel", "test", new Date(Instant.now().toEpochMilli()), false));
-    }
 
     public List<Todo> getTodosFromUser(String user) {
         return todos.stream().filter(todo -> todo.getUser().equals(user)).toList();
