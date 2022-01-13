@@ -30,6 +30,7 @@
       <th>Description</th>
       <th>Target date</th>
       <th>Is done?</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
       <td><span th:text="${todo.getDescription()}"></span></td>
       <td><span th:text="${todo.getTargetDate()}"></span></td>
       <td><input th:checked="${todo.isDone()}" type="checkbox"></td>
+      <td><a class="btn btn-warning" th:href="'/delete-todo?id=' + ${todo.getId()}" type="button">Delete</a></td>
     </tr>
     </tbody>
   </table>
