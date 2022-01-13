@@ -5,8 +5,9 @@
     <title>ToDo List</title>
 </head>
 <body>
-<h1>ToDo List</h1><br>
-<h2 th:text="'User: ' + ${user}"></h2><br>
+<h1>ToDo List</h1>
+<h2 th:text="'User: ' + ${user}"></h2>
+<a href="/add-todo">Create new</a>
 <hr>
 <p th:text="${todos}"></p>
 </body>
