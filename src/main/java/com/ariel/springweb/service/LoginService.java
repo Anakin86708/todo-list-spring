@@ -1,4 +1,4 @@
-package com.ariel.springweb;
+package com.ariel.springweb.service;
 
 import org.springframework.stereotype.Component;
 
