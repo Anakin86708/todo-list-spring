@@ -21,7 +21,16 @@ public class TodoService {
         todos.add(new Todo(id, user, description, targetDate, isDone));
     }
 
+    public Todo retrieveTodo(int id) {
+        return todos.stream().filter(todo -> todo.getId() == id).toList().get(0);
+    }
+
     public void removeTodo(int id) {
         todos.removeIf(todo -> todo.getId() == id);
+    }
+
+    public void updateTodo(Todo todo) {
+        todos.remove(todo);
+        todos.add(todo);
     }
 }

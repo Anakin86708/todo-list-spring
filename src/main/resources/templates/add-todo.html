@@ -21,6 +21,8 @@
   </div>
   <hr>
   <form class="mb-3" method="post" th:object="${todo}">
+    <input th:field="*{id}" type="hidden">
+    <input th:field="*{user}" type="hidden">
     <fieldset class="form-group row mb-3">
       <label class="row-form-label" for="desc">Description:</label>
       <input class="form-control" id="desc" name="desc" required th:field="*{description}" type="text">
