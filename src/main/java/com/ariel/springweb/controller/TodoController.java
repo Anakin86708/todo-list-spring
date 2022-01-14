@@ -8,14 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
-@SessionAttributes("user")
 public class TodoController {
 
     @Autowired
@@ -29,18 +31,22 @@ public class TodoController {
 
     @RequestMapping(value = "/todo-list", method = RequestMethod.GET)
     public String showTodoPage(Model model) {
-        model.addAttribute("todos", service.getTodosFromUser(getUser(model)));
+        String user = getUser();
+        model.addAttribute("user", user);
+        model.addAttribute("todos", service.getTodosFromUser(user));
         return "todo-list";
     }
 
     @RequestMapping(value = "/add-todo", method = RequestMethod.GET)
     public String showAddNewTodo(Model model) {
+        model.addAttribute("user", getUser());
         model.addAttribute("todo", new Todo());
         return "add-todo";
     }
 
     @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
     public String showEditTodo(Model model, @RequestParam int id) {
+        model.addAttribute("user", getUser());
         Todo todo = service.retrieveTodo(id);
         model.addAttribute("todo", todo);
         return "add-todo";
@@ -51,7 +57,7 @@ public class TodoController {
         if (result.hasErrors()) {
             return "add-todo";
         }
-        service.addTodo(getUser(model), todo.getDescription(), todo.getTargetDate(), todo.isDone());
+        service.addTodo(getUser(), todo.getDescription(), todo.getTargetDate(), todo.isDone());
         return "redirect:/todo-list";
     }
 
@@ -71,7 +77,7 @@ public class TodoController {
         return "redirect:/todo-list";
     }
 
-    private String getUser(Model model) {
-        return (String) model.getAttribute("user");
+    private String getUser() {
+        return GeneralController.getLoggedUser();
     }
 }
