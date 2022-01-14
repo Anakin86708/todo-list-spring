@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,8 +29,7 @@ public class TodoController {
 
     @RequestMapping(value = "/todo-list", method = RequestMethod.GET)
     public String showTodoPage(Model model) {
-        String user = (String) model.getAttribute("user");
-        refreshModelTodos(model, user);
+        model.addAttribute("todos", service.getTodosFromUser(getUser(model)));
         return "todo-list";
     }
 
@@ -40,10 +40,11 @@ public class TodoController {
     }
 
     @RequestMapping(value = "/add-todo", method = RequestMethod.POST)
-    public String addNewTodo(Model model, Todo todo) throws ParseException {
-        String user = (String) model.getAttribute("user");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
-        service.addTodo(user, todo.getDescription(), todo.getTargetDate(), todo.isDone());
+    public String addNewTodo(Model model, @Valid Todo todo, BindingResult result) {
+        if (result.hasErrors()) {
+            return "add-todo";
+        }
+        service.addTodo(getUser(model), todo.getDescription(), todo.getTargetDate(), todo.isDone());
         return "redirect:/todo-list";
     }
 
@@ -53,7 +54,7 @@ public class TodoController {
         return "redirect:/todo-list";
     }
 
-    private void refreshModelTodos(Model model, String user) {
-        model.addAttribute("todos", service.getTodosFromUser(user));
+    private String getUser(Model model) {
+        return (String) model.getAttribute("user");
     }
 }

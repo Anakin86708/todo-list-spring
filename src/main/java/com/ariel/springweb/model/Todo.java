@@ -1,11 +1,19 @@
 package com.ariel.springweb.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
 public class Todo {
+    public static final int MAX_DESC = 128;
+
     private int id;
     private String user;
+    @NotEmpty(message = "Cannot be empty")
+    @NotBlank(message = "Cannot be blank")
+    @Size(max = MAX_DESC, message = "Maximum of " + MAX_DESC + " characters!")
     private String description;
     private Date targetDate;
     private boolean done;
