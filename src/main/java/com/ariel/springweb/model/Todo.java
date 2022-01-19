@@ -1,15 +1,22 @@
 package com.ariel.springweb.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Todo {
     public static final int MAX_DESC = 128;
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private long id;
+
     private String user;
     @NotEmpty(message = "Cannot be empty")
     @NotBlank(message = "Cannot be blank")
@@ -18,16 +25,12 @@ public class Todo {
     private Date targetDate;
     private boolean done;
 
-    public Todo() {
+    protected Todo() {
 
     }
 
-    public Todo(int id, String user, String description, Date targetDate, boolean done) {
-        this.id = id;
+    public Todo(String user) {
         this.user = user;
-        this.description = description;
-        this.targetDate = targetDate;
-        this.done = done;
     }
 
     @Override
@@ -41,11 +44,11 @@ public class Todo {
                 '}';
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

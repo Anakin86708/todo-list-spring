@@ -13,7 +13,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // Create a user
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("ariel").password("$2y$10$oBUO8hzVb95pzC4A/s.MNOmm.UCN/katbZQ7TDHD2ozQxDNo7yIfS").roles("USER", "ADMIN");
+        auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).withUser("ariel").password("$2y$10$Ydwe/j6RioYOOw/4pKjENumwT0DrugTJyb.5p7yNLRBRmva0iGjqm").roles("USER", "ADMIN");
     }
 
     PasswordEncoder passwordEncoder() {
@@ -22,9 +22,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login", "/h2-console/**").permitAll()
-                .antMatchers("/", "/*todo*/**").access("hasRole('USER')").and()
-                .formLogin();
+        http.authorizeRequests().antMatchers("/login").permitAll()
+                .antMatchers("/", "/*todo*/**").hasRole("USER")
+                .antMatchers("/h2-console/**", "/**").hasRole("ADMIN")
+                .and().formLogin();
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
