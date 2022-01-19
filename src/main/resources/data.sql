@@ -1,0 +1,1 @@
+INSERT INTO todo VALUES (0, 'SQL', TRUE, SYSDATE(), 'ariel')
