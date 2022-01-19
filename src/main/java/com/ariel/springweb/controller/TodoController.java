@@ -21,7 +21,7 @@ import java.util.Date;
 public class TodoController {
 
     @Autowired
-    TodoService service;
+    private TodoService service;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -39,16 +39,16 @@ public class TodoController {
 
     @RequestMapping(value = "/add-todo", method = RequestMethod.GET)
     public String showAddNewTodo(Model model) {
-        model.addAttribute("user", getUser());
-        model.addAttribute("todo", new Todo());
+        String user = getUser();
+        model.addAttribute("user", user);
+        model.addAttribute("todo", new Todo(user));
         return "add-todo";
     }
 
     @RequestMapping(value = "/update-todo", method = RequestMethod.GET)
     public String showEditTodo(Model model, @RequestParam int id) {
         model.addAttribute("user", getUser());
-        Todo todo = service.retrieveTodo(id);
-        model.addAttribute("todo", todo);
+        model.addAttribute("todo", service.retrieveTodo(id));
         return "add-todo";
     }
 
@@ -57,7 +57,7 @@ public class TodoController {
         if (result.hasErrors()) {
             return "add-todo";
         }
-        service.addTodo(getUser(), todo.getDescription(), todo.getTargetDate(), todo.isDone());
+        service.addTodo(todo);
         return "redirect:/todo-list";
     }
 
